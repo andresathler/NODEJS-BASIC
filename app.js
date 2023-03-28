@@ -1,8 +1,20 @@
-const http = require('http');
-const routes = require('./routes');
+const express = require('express');
+const bodyParser = require('body-parser')
+const path = require("path");
 
-console.log(routes.someText);
+const  app = express();
 
-const server = http.createServer(routes.handler);
+const adminRoutes = require('./routes/admin');
+const shopRoutes = require('./routes/shop');
+const notFoundRoutes = require('./routes/not_found')
 
-server.listen(3000);
+
+app.use(bodyParser.urlencoded({extended: false}));
+app.use(express.static(path.join(__dirname, 'public')))
+
+app.use('/admin', adminRoutes);
+app.use(shopRoutes);
+app.use(notFoundRoutes);
+
+
+app.listen(3000);
